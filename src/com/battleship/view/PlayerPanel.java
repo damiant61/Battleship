@@ -19,7 +19,7 @@ public class PlayerPanel extends JPanel implements Observer {
 
     private Player player;
     private boolean human;
-
+sadas
     private JButton[][] cells = new JButton[10][10];
     private FireActionListener fireActionListener;
 
