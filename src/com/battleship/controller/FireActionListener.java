@@ -4,6 +4,7 @@ import com.battleship.model.Computer;
 import com.battleship.model.GameModel;
 import com.battleship.model.Human;
 import com.battleship.model.State;
+import com.battleship.view.GamePanel;
 import com.battleship.view.PlayerPanel;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -15,10 +16,11 @@ public class FireActionListener extends Observable implements ActionListener {
     private PlayerPanel panel;
     private GameModel model;
 
-    public FireActionListener(PlayerPanel panel, GameModel model) {
+    public FireActionListener(PlayerPanel panel, GamePanel gamePanel, GameModel model) {
         this.panel = panel;
         this.model = model;
         this.addObserver(panel);
+        this.addObserver(gamePanel);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class FireActionListener extends Observable implements ActionListener {
             do {
                 result = computerPlayer.makeMove(humanPlayer);
              //   update(this.defensiveFields, result[1], result[2], false);
+                notifyObservers(new Point((int)result[1], (int)result[2]));
             } while (result[0] == State.SHIP_HIT || result[0] == State.SHIP_DEAD && !humanPlayer.isDead());
         }
      //   update(this.offensiveFields, i, j, true);

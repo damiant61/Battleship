@@ -2,7 +2,9 @@ package com.battleship.view;
 
 import com.battleship.controller.FireActionListener;
 import com.battleship.model.Cell;
+import com.battleship.model.Computer;
 import com.battleship.model.GameModel;
+import com.battleship.model.Human;
 import com.battleship.model.Player;
 import com.battleship.model.Ship;
 import com.battleship.model.State;
@@ -73,14 +75,18 @@ public class PlayerPanel extends JPanel implements Observer {
 
             List<Ship> ships;
 
-            if (human) {
-                ships = model.getHuman().getOffensive().getShip();
-            } else {
-                ships = model.getHuman().getDefense().getShip();
-            }
+            Human humanPlayer = model.getHuman();
+            Computer computerPlayer = model.getComputer();
 
-            defense = model.getComputer().getDefense().getBoard();
-            offensive = model.getHuman().getOffensive().getBoard();
+            if (human) {
+                defense = humanPlayer.getDefense().getBoard();
+                offensive = computerPlayer.getOffensive().getBoard();
+                ships = humanPlayer.getDefense().getShip();
+            } else {
+                defense = computerPlayer.getDefense().getBoard();
+                offensive = humanPlayer.getOffensive().getBoard();
+                ships = computerPlayer.getDefense().getShip();
+            }
 
             int x = ((Point) arg).x;
             int y = ((Point) arg).y;
@@ -118,7 +124,7 @@ public class PlayerPanel extends JPanel implements Observer {
                                 for (int k = -1; k <= 1; k++) {
                                     if (mast[i][0] + j < 10 && mast[i][0] + j >= 0 && mast[i][1] + k < 10 && mast[i][1] + k >= 0
                                             && offensive[mast[i][0] + j][mast[i][1] + k].getState() == State.PROTECTED_FIELD) {
-                                        cells[mast[i][0] + j][mast[i][1] + k].setIcon(new ImageIcon(this.getClass().getResource("/_RESOURCES/_IMG/FieldStatus_PROTECTED_FIELD.jpg")));
+                                        cells[mast[i][0] + j][mast[i][1] + k].setIcon(new ImageIcon(this.getClass().getResource("../resource/img/FieldStatus_PROTECTED_FIELD.jpg")));
                                     }
                                 }
                             }

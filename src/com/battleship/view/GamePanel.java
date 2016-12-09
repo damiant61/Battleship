@@ -14,13 +14,15 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements Observer {
 
     private GameModel model;
 
@@ -38,9 +40,9 @@ public class GamePanel extends JPanel {
         this.setLayout(null);
 
         humanPanel = new PlayerPanel(model.getHuman(), true);
-        humanPanel.initFireActionListener(new FireActionListener(humanPanel, model));
+        humanPanel.initFireActionListener(new FireActionListener(humanPanel, this, model));
         computerPanel = new PlayerPanel(model.getComputer(), false);
-        computerPanel.initFireActionListener(new FireActionListener(computerPanel, model));
+        computerPanel.initFireActionListener(new FireActionListener(computerPanel, this, model));
 
         createGUI();
     }
@@ -211,8 +213,8 @@ public class GamePanel extends JPanel {
         this.add(bg);
     }
 
-    private void update(JButton[][] buttons, int x, int y, boolean player) {
-
+    @Override
+    public void update(Observable o, Object arg) {
         Human humanPlayer = model.getHuman();
         Computer computerPlayer = model.getComputer();
 
@@ -221,9 +223,6 @@ public class GamePanel extends JPanel {
         // Update board
         boardStatistics[0].setText("Trafienie: " + computerPlayer.getOffensive().getHit() + "   /   Chybienie: " + computerPlayer.getOffensive().getMiss() + "   /   Pole okrętu: " + (humanPlayer.getDefense().getShipUnit() - computerPlayer.getOffensive().getHit()));
         boardStatistics[1].setText("Trafienie: " + humanPlayer.getOffensive().getHit() + "   /   Chybienie: " + humanPlayer.getOffensive().getMiss() + "   /   Pole okrętu: " + (computerPlayer.getDefense().getShipUnit() - humanPlayer.getOffensive().getHit()));
-
-        // Update fields
-        
     }
 
 }
