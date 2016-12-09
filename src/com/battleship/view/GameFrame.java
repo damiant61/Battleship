@@ -15,7 +15,7 @@ public class GameFrame extends JFrame {
         this.pack();
         this.setVisible(true);
         
-        model.initialize(10, 10, true, new int[] { 1, 1, 2, 2, 3 });
+        model.initialize(10, 10, false, new int[] { 1, 1, 2, 2, 3 });
         
         gamePanel = new GamePanel(model);
         

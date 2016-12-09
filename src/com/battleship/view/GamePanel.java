@@ -1,5 +1,6 @@
 package com.battleship.view;
 
+import com.battleship.controller.CellMouseListener;
 import com.battleship.controller.FireActionListener;
 import com.battleship.model.Cell;
 import com.battleship.model.Computer;
@@ -40,9 +41,9 @@ public class GamePanel extends JPanel implements Observer {
         this.setLayout(null);
 
         humanPanel = new PlayerPanel(model.getHuman(), true);
-        humanPanel.initFireActionListener(new FireActionListener(humanPanel, this, model));
+        humanPanel.initFireActionListener(new FireActionListener(humanPanel, this, model), new CellMouseListener(humanPanel, this, model));
         computerPanel = new PlayerPanel(model.getComputer(), false);
-        computerPanel.initFireActionListener(new FireActionListener(computerPanel, this, model));
+        computerPanel.initFireActionListener(new FireActionListener(computerPanel, this, model), new CellMouseListener(humanPanel, this, model));
 
         createGUI();
     }
@@ -219,8 +220,11 @@ public class GamePanel extends JPanel implements Observer {
         Computer computerPlayer = model.getComputer();
 
         updateShipStatus();
-
-        // Update board
+        
+        if (placeShips != null) {
+            placeShips.setVisible(false);
+        }
+        
         boardStatistics[0].setText("Trafienie: " + computerPlayer.getOffensive().getHit() + "   /   Chybienie: " + computerPlayer.getOffensive().getMiss() + "   /   Pole okrętu: " + (humanPlayer.getDefense().getShipUnit() - computerPlayer.getOffensive().getHit()));
         boardStatistics[1].setText("Trafienie: " + humanPlayer.getOffensive().getHit() + "   /   Chybienie: " + humanPlayer.getOffensive().getMiss() + "   /   Pole okrętu: " + (computerPlayer.getDefense().getShipUnit() - humanPlayer.getOffensive().getHit()));
     }

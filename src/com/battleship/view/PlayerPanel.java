@@ -1,5 +1,6 @@
 package com.battleship.view;
 
+import com.battleship.controller.CellMouseListener;
 import com.battleship.controller.FireActionListener;
 import com.battleship.model.Cell;
 import com.battleship.model.Computer;
@@ -22,8 +23,9 @@ public class PlayerPanel extends JPanel implements Observer {
     private Player player;
     private boolean human;
 
-    private JButton[][] cells = new JButton[10][10];
+    public JButton[][] cells = new JButton[10][10];
     private FireActionListener fireActionListener;
+    private CellMouseListener cellMouseListener;
 
     public PlayerPanel(Player player, boolean human) {
         this.player = player;
@@ -33,8 +35,9 @@ public class PlayerPanel extends JPanel implements Observer {
         this.setLayout(new GridLayout(10, 10));
     }
 
-    public void initFireActionListener(FireActionListener fireActionListener) {
+    public void initFireActionListener(FireActionListener fireActionListener, CellMouseListener cellMouseListener) {
         this.fireActionListener = fireActionListener;
+        this.cellMouseListener = cellMouseListener;
         for (int j = 0; j < 10; j++) {
             for (int i = 0; i < 10; i++) {
                 cells[i][j] = new JButton(); // Pola defensywne
@@ -50,6 +53,7 @@ public class PlayerPanel extends JPanel implements Observer {
                             cells[i][j].setIcon(new ImageIcon(this.getClass().getResource("../resource/img/FieldStatus_PROTECTED_FIELD.jpg")));
                             break;
                     }
+                    cells[i][j].addMouseListener(cellMouseListener);
                 } else {
                     cells[i][j].setIcon(new ImageIcon(this.getClass().getResource("../resource/img/FieldStatus_OCEAN.jpg")));
                     cells[i][j].setRolloverIcon(new ImageIcon(this.getClass().getResource("../resource/img/target.jpg")));
@@ -60,7 +64,6 @@ public class PlayerPanel extends JPanel implements Observer {
                 cells[i][j].setToolTipText((char) ('A' + j) + "" + (i + 1));
                 cells[i][j].setBorder(null);
                 cells[i][j].setName(i + " " + j);
-                // cells[i][j].addMouseListener(this);
                 this.add(cells[i][j]);
             }
         }
@@ -68,7 +71,7 @@ public class PlayerPanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == fireActionListener) {
+        if (o == fireActionListener || o == cellMouseListener) {
             Cell[][] defense, offensive;
 
             GameModel model = GameModel.getInstance();

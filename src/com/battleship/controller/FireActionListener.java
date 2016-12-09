@@ -15,10 +15,12 @@ public class FireActionListener extends Observable implements ActionListener {
 
     private PlayerPanel panel;
     private GameModel model;
+    private GamePanel gamePanel;
 
     public FireActionListener(PlayerPanel panel, GamePanel gamePanel, GameModel model) {
         this.panel = panel;
         this.model = model;
+        this.gamePanel = gamePanel;
         this.addObserver(panel);
         this.addObserver(gamePanel);
     }
@@ -27,36 +29,34 @@ public class FireActionListener extends Observable implements ActionListener {
     protected synchronized void setChanged() {
         super.setChanged();
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
+
         int i = Integer.parseInt(e.getActionCommand().split(" ")[0]);
         int j = Integer.parseInt(e.getActionCommand().split(" ")[1]);
-       // if (placeShips != null) {
-        //    placeShips.setVisible(false);
-       // }
-        
+
         Human humanPlayer = model.getHuman();
         Computer computerPlayer = model.getComputer();
-        
 
-        if (humanPlayer.fire(computerPlayer, i, j) == State.SHIP_MISS) {
-            Object[] result = new Object[3];
-            do {
-                result = computerPlayer.makeMove(humanPlayer);
-             //   update(this.defensiveFields, result[1], result[2], false);
-                notifyObservers(new Point((int)result[1], (int)result[2]));
-            } while (result[0] == State.SHIP_HIT || result[0] == State.SHIP_DEAD && !humanPlayer.isDead());
+        if (humanPlayer.getPlacedShips()) {
+
+            if (humanPlayer.fire(computerPlayer, i, j) == State.SHIP_MISS) {
+                Object[] result = new Object[3];
+                do {
+                    result = computerPlayer.makeMove(humanPlayer);
+                    notifyObservers(new Point((int) result[1], (int) result[2]));
+                } while (result[0] == State.SHIP_HIT || result[0] == State.SHIP_DEAD && !humanPlayer.isDead());
+            }
+            if (humanPlayer.isDead()) {
+                //initEndGame(false);
+            } else if (computerPlayer.isDead()) {
+                //initEndGame(true);
+            }
+
+            setChanged();
+            notifyObservers(new Point(i, j));
         }
-     //   update(this.offensiveFields, i, j, true);
-        if (humanPlayer.isDead()) {
-            //initEndGame(false);
-        } else if (computerPlayer.isDead()) {
-            //initEndGame(true);
-        }
-        
-        setChanged();
-        notifyObservers(new Point(i, j));
     }
 
 }
