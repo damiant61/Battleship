@@ -227,9 +227,9 @@ public class GamePanel extends JPanel implements Observer {
         
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (humanPlayer.isDead()) {
-            frame.add(new EndGameDialog(false));
+            frame.add(new EndGameDialog(this, false));
         } else if (computerPlayer.isDead()) {
-            frame.add(new EndGameDialog(true));            
+            frame.add(new EndGameDialog(this, true));            
         }
 
         updateShipStatus();
@@ -240,6 +240,14 @@ public class GamePanel extends JPanel implements Observer {
         
         boardStatistics[0].setText("Trafienie: " + computerPlayer.getOffensive().getHit() + "   /   Chybienie: " + computerPlayer.getOffensive().getMiss() + "   /   Pole okrętu: " + (humanPlayer.getDefense().getShipUnit() - computerPlayer.getOffensive().getHit()));
         boardStatistics[1].setText("Trafienie: " + humanPlayer.getOffensive().getHit() + "   /   Chybienie: " + humanPlayer.getOffensive().getMiss() + "   /   Pole okrętu: " + (computerPlayer.getDefense().getShipUnit() - humanPlayer.getOffensive().getHit()));
+    }
+
+    public PlayerPanel getHumanPanel() {
+        return humanPanel;
+    }
+
+    public PlayerPanel getComputerPanel() {
+        return computerPanel;
     }
 
 }

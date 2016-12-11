@@ -93,8 +93,6 @@ public class PlayerPanel extends JPanel implements Observer {
 
             int x = ((Point) ((Object[]) arg)[1]).x;
             int y = ((Point) ((Object[]) arg)[1]).y;
-            
-            System.out.println(x + " " + y + " " + human);
 
             cells[x][y].setRolloverIcon(null);
             switch (defense[x][y].getState()) {
