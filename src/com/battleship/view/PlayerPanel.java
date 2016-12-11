@@ -71,7 +71,7 @@ public class PlayerPanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == fireActionListener || o == cellMouseListener) {
+        if ((o == fireActionListener || o == cellMouseListener) && GameModel.getInstance().isPlayer() == human) {
             Cell[][] defense, offensive;
 
             GameModel model = GameModel.getInstance();
@@ -91,8 +91,10 @@ public class PlayerPanel extends JPanel implements Observer {
                 ships = computerPlayer.getDefense().getShip();
             }
 
-            int x = ((Point) arg).x;
-            int y = ((Point) arg).y;
+            int x = ((Point) ((Object[]) arg)[1]).x;
+            int y = ((Point) ((Object[]) arg)[1]).y;
+            
+            System.out.println(x + " " + y + " " + human);
 
             cells[x][y].setRolloverIcon(null);
             switch (defense[x][y].getState()) {

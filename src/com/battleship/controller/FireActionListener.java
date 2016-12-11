@@ -13,15 +13,18 @@ import java.util.Observable;
 
 public class FireActionListener extends Observable implements ActionListener {
 
-    private PlayerPanel panel;
+    private PlayerPanel computer;
+    private PlayerPanel human;
     private GameModel model;
     private GamePanel gamePanel;
 
-    public FireActionListener(PlayerPanel panel, GamePanel gamePanel, GameModel model) {
-        this.panel = panel;
+    public FireActionListener(PlayerPanel human, PlayerPanel computer, GamePanel gamePanel, GameModel model) {
+        this.computer = computer;
+        this.human = human;
         this.model = model;
         this.gamePanel = gamePanel;
-        this.addObserver(panel);
+        this.addObserver(human);
+        this.addObserver(computer);
         this.addObserver(gamePanel);
     }
 
@@ -45,17 +48,21 @@ public class FireActionListener extends Observable implements ActionListener {
                 Object[] result = new Object[3];
                 do {
                     result = computerPlayer.makeMove(humanPlayer);
-                    notifyObservers(new Point((int) result[1], (int) result[2]));
+                    setChanged();
+                    notifyObservers(new Object[]{false, new Point((int) result[1], (int) result[2])});
                 } while (result[0] == State.SHIP_HIT || result[0] == State.SHIP_DEAD && !humanPlayer.isDead());
             }
-               if (humanPlayer.isDead()) {
+
+            if (humanPlayer.isDead()) {
                 //initEndGame(false);
             } else if (computerPlayer.isDead()) {
                 //initEndGame(true);
             }
 
+            model.changePlayer();
             setChanged();
-            notifyObservers(new Point(i, j));
+            notifyObservers(new Object[]{true, new Point(i, j)});
+            model.changePlayer();
         }
     }
 

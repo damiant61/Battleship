@@ -6,6 +6,7 @@ public class GameModel {
     
     private Human human;
     private Computer computer;
+    private boolean player = true;
     
     private GameModel(){
     }
@@ -15,6 +16,14 @@ public class GameModel {
         this.human.initialize(sizeX, sizeY, PlacedShips, shipsToPlace);
         this.computer = Computer.getInstance();
         this.computer.initialize(sizeX, sizeY, shipsToPlace);
+    }
+
+    public boolean isPlayer() {
+        return player;
+    }
+    
+    public void changePlayer() {
+        player = player == true ? false : true;
     }
     
     public static GameModel getInstance() {

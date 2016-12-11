@@ -41,9 +41,12 @@ public class GamePanel extends JPanel implements Observer {
         this.setLayout(null);
 
         humanPanel = new PlayerPanel(model.getHuman(), true);
-        humanPanel.initFireActionListener(new FireActionListener(humanPanel, this, model), new CellMouseListener(humanPanel, this, model));
         computerPanel = new PlayerPanel(model.getComputer(), false);
-        computerPanel.initFireActionListener(new FireActionListener(computerPanel, this, model), new CellMouseListener(humanPanel, this, model));
+        
+        FireActionListener fireActionListener = new FireActionListener(humanPanel, computerPanel, this, model);
+        
+        humanPanel.initFireActionListener(fireActionListener, new CellMouseListener(humanPanel, this, model));
+        computerPanel.initFireActionListener(fireActionListener, new CellMouseListener(humanPanel, this, model));
 
         createGUI();
     }
