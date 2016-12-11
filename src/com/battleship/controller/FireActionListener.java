@@ -48,7 +48,7 @@ public class FireActionListener extends Observable implements ActionListener {
                     notifyObservers(new Point((int) result[1], (int) result[2]));
                 } while (result[0] == State.SHIP_HIT || result[0] == State.SHIP_DEAD && !humanPlayer.isDead());
             }
-            if (humanPlayer.isDead()) {
+               if (humanPlayer.isDead()) {
                 //initEndGame(false);
             } else if (computerPlayer.isDead()) {
                 //initEndGame(true);
