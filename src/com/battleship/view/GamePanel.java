@@ -19,9 +19,11 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements Observer {
 
@@ -219,8 +221,16 @@ public class GamePanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        
         Human humanPlayer = model.getHuman();
         Computer computerPlayer = model.getComputer();
+        
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (humanPlayer.isDead()) {
+            frame.add(new EndGameDialog(false));
+        } else if (computerPlayer.isDead()) {
+            frame.add(new EndGameDialog(true));            
+        }
 
         updateShipStatus();
         

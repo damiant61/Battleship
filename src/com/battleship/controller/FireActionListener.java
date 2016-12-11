@@ -54,9 +54,9 @@ public class FireActionListener extends Observable implements ActionListener {
             }
 
             if (humanPlayer.isDead()) {
-                //initEndGame(false);
+                notifyObservers();
             } else if (computerPlayer.isDead()) {
-                //initEndGame(true);
+                notifyObservers();
             }
 
             model.changePlayer();
